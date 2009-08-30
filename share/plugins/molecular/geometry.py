@@ -98,7 +98,12 @@ class GuessGeometry(Immediate):
             raise UserError("Could not get molecular graph.", "Make sure that the selected frame contains a molecule.")
 
         # Guessed and original geometry
-        opt_coords = guess_geometry(graph).coordinates
+
+        unitcell = context.application.model.universe.cell
+        unitcell_reciproke = context.application.model.universe.cell_reciproke
+        unitcell_active = context.application.model.universe.cell_active # not entirely sure where to set this in zeobuilder
+
+        opt_coords = guess_geometry(graph, unitcell_active, unitcell, unitcell_reciproke).coordinates
         org_coords = graph.molecule.coordinates
 
         coords_to_zeobuilder(org_coords, opt_coords, graph.molecule.atoms, parent, graph)
